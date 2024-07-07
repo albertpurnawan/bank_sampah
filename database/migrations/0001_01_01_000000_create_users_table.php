@@ -13,8 +13,20 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('id_user');
+            $table->string('nama');
+            $table->string('foto')->nullable();
             $table->string('email')->unique();
+            $table->string('kode_pos')->nullable();
+            $table->date('tanggal_lahir')->nullable();
+            $table->string('kota')->nullable();
+            $table->string('nomor')->nullable();
+            $table->string('alamat')->nullable();
+            $table->string('bank')->nullable();
+            $table->string('nomor_rekening')->nullable();
+            $table->string('is_lengkap')->nullable()->default('0');
+            $table->string('role')->default('Nasabah');
+            $table->integer('saldo')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -47,3 +59,4 @@ return new class extends Migration
         Schema::dropIfExists('sessions');
     }
 };
+
