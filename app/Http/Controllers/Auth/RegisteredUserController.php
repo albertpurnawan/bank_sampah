@@ -86,7 +86,7 @@ class RegisteredUserController extends Controller
                 'max:255',
             ],
             'nomor' => ['required', 'string', 'max:13'],
-            'role' => [Rule::in(['Admin', 'Nasabah'])],
+            'role' => [Rule::in(['Admin', 'Nasabah', 'COMPANY'])],
         ]);
         $is_lengkap = 0;
         if ($request->id_user) {

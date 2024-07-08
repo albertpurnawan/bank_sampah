@@ -51,6 +51,7 @@
                         <option value="">Pilih Role</option>
                         <option value="Admin" {{ old('role', $data->role ?? '') == 'Admin' ? 'selected' : '' }}>Admin</option>
                         <option value="Nasabah" {{ old('role', $data->role ?? '') == 'Nasabah' ? 'selected' : '' }}>Nasabah</option>
+                        <option value="COMPANY" {{ old('role', $data->role ?? '') == 'COMPANY' ? 'selected' : '' }}>COMPANY</option>
                     </select>
                     <div class="absolute inset-y-0 right-[23%] flex items-center pl-3 pointer-events-none">
                         <img class="w-[0.9rem] h-[0.4rem]" src="../../assets/vectors/vector_3_x2.svg" />
