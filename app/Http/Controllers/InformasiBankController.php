@@ -50,7 +50,8 @@ class InformasiBankController extends Controller
         return view('InformasiBank.informasi-bank', compact('data', 'total_sampah', 'total_transaksi'));
     }
 
-    public function extension_search_informasi($ids){
+    public function extension_search_setoran($ids){
+ 
         $data = SetoranSampah::whereIn('setoran_sampahs.id_setoran_sampah', $ids)
         ->leftJoin('list_sampahs', 'list_sampahs.id_setoran_sampah', '=', 'setoran_sampahs.id_setoran_sampah')
         ->leftJoin('jenis_sampahs', 'jenis_sampahs.id_jenis_sampah', '=', 'list_sampahs.id_jenis_sampah')
@@ -64,8 +65,8 @@ class InformasiBankController extends Controller
             'setoran_sampahs.tanggal',
             'setoran_sampahs.created_at',
             'setoran_sampahs.updated_at',
-            DB::raw("SUM(list_sampahs.qty) as qty"),
-            DB::raw("SUM(list_sampahs.qty * jenis_sampahs.harga_per_kg) as total_harga")
+            DB::raw("IFNULL(SUM(list_sampahs.qty), 0) as qty"),
+            DB::raw("IFNULL(SUM(list_sampahs.qty * jenis_sampahs.harga_per_kg), 0) as total_harga")
         )
         ->groupBy(
             'setoran_sampahs.id',

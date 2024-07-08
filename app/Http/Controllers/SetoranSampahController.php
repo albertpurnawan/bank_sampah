@@ -44,7 +44,6 @@ class SetoranSampahController extends Controller
 
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'nama' => 'string|max:255',
             'tipe_setor' => 'string',
@@ -194,5 +193,16 @@ class SetoranSampahController extends Controller
             ->where('role', 'Admin')
             ->update(['saldo' => DB::raw('users.saldo + ' . $potongan_harga)]);
         }
+    }
+
+    public function approve($id)
+    {
+        DB::table('setoran_sampahs')
+            ->where('id', $id)
+            ->update(['status' => 'Pesanan Selesai']);
+        $setoran = SetoranSampah::find($id);
+        $this->updateSaldo($setoran);
+
+        return redirect()->route('setoran-sampah')->with('success', 'Setoran Sampah Approved successfully');
     }
 }

@@ -26,6 +26,7 @@ class SearchController extends Controller
         
         try {
             $informasibank = 0;
+            $riwayatpenjualan = 0;
             $results = [];
             $query = $request->search;
             if (empty($query)) {
@@ -47,6 +48,7 @@ class SearchController extends Controller
             }
             if (Auth::check() && Auth::user()->role == 'Nasabah' && $page == 'Penjualan') {
                 $page = 'SetoranSampah';
+                $riwayatpenjualan = 1;
             }
 
             $modelClass = app("App\Models\\$page");
@@ -54,33 +56,51 @@ class SearchController extends Controller
             $columns = Schema::getColumnListing($modelClass->getTable());
             $columns = array_diff($columns, ['updated_at', 'created_at', 'id']);
             if (Auth::check() && Auth::user()->role == 'Nasabah') {
-                $results = $modelClass::where('id_user', Auth::user()->id_user)
-                    ->where(function ($q) use ($columns, $query) {
-                        foreach ($columns as $column) {
-                            $q->orWhereRaw("CONVERT($column, CHAR) LIKE ?", ['%'.$query.'%']);
-                        }
-                    })->get();
+                $tableName = (new $modelClass)->getTable();
+                $searchTerm = $query;
+                $columns = Schema::getColumnListing($tableName);
+                $query = DB::table($tableName);
+    
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', '%' . $searchTerm . '%')->where('id_user', Auth::user()->id_user);
+                }
+                $results = $query->get();
             } else {
-                $results = $modelClass::where(function ($q) use ($columns, $query) {
-                    foreach ($columns as $column) {
-                        $q->orWhereRaw("CONVERT($column, CHAR) LIKE ?", ['%'.$query.'%']);
-                    }
-                })->get();
+                $tableName = (new $modelClass)->getTable();
+                $searchTerm = $query;
+                $columns = Schema::getColumnListing($tableName);
+                $query = DB::table($tableName);
+    
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', '%' . $searchTerm . '%');
+                }
+                $results = $query->get();
             }
             if ($page == 'Penjualan') {
                 $penjualanController = new PenjualanController();
                 $ids = $results->pluck('id_penjualan')->toArray();
                 $results = $penjualanController->extension_search_penjualan($ids);
-            }else{
+            }else if ($page == 'SetoranSampah' && $riwayatpenjualan != 1){
                 $penjualanController = new PenjualanController();
                 $ids = $results->pluck('id_setoran_sampah')->toArray();
                 $results = $penjualanController->extension_search_setoran($ids);
+                // dd($results);   
+            } else if ($page == 'SetoranSampah' && Auth::check() && Auth::user()->role == 'Nasabah' && $riwayatpenjualan == 1) {
+                // dd($results);
+                $penjualanController = new PenjualanController();
+                $ids = $results->pluck('id_setoran_sampah')->toArray();
+                $results = $penjualanController->extension_search_penjualan($ids);
+                // dd($results);   
+            }else if($page == 'JadwalPengambilan'){
+                $jadwalPengambilanController = new JadwalPengambilanController();
+                $ids = $results->pluck('id_jadwal_pengambilan')->toArray();
+                $results = $jadwalPengambilanController->extension_search_pengambilan($ids);
             }
 
             if ($informasibank == 1) {
                 $informasiController = new InformasiBankController();
                 $ids = $results->pluck('id_setoran_sampah')->toArray();
-                $results = $informasiController->extension_search_informasi($ids);
+                $results = $informasiController->extension_search_setoran($ids);
             }
             return response()->json(['data' => $results], 200); 
         } catch (\Throwable $e) {

@@ -71,6 +71,21 @@
                     <img class="w-[0.9rem] h-[0.4rem]" src="../../assets/vectors/vector_3_x2.svg" />
                 </div>
             </div>
+            <div class="rounded-[0.6rem] flex flex-col w-[80%] box-sizing-border">
+                <div class="m-[0_0_0.4rem_0] inline-block self-start break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]">
+                    Status
+                </div>
+                <div class="relative w-full h-fit overflow-hidden rounded-[0.5rem]">
+                    <select name="status" class="rounded-[0.6rem] bg-[#FFFFFF] relative p-[1.6rem_1.6rem_1.6rem_1.6rem] w-full box-sizing-border break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]" style="appearance: none;">
+                            <option value="">Pilih Status</option>
+                            <option value="Pending" @if(isset($data->status) && $data->status == 'Pending') selected @endif>Pending</option>
+                            <option value="Selesai" @if(isset($data->status) && $data->status == 'Selesai') selected @endif>Selesai</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-[4%] flex items-center pl-3 pointer-events-none">
+                        <img class="w-[0.9rem] h-[0.4rem]" src="../../assets/vectors/vector_3_x2.svg" />
+                    </div>
+                </div>
+            </div>
           </div>
           <div class="rounded-[0.6rem] flex flex-col w-[80%] box-sizing-border">
               <div class="m-[0_0_0.4rem_0] inline-block self-start break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]">

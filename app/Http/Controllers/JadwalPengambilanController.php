@@ -18,15 +18,29 @@ class JadwalPengambilanController extends Controller
 {
     public function index()
     {
-        $data = JadwalPengambilan::select('jadwal_pengambilans.*', DB::raw("
-        (SELECT GROUP_CONCAT(alamat_penjemputans.alamat SEPARATOR ', ') 
-         FROM alamat_penjemputans 
-         WHERE alamat_penjemputans.id_jadwal_pengambilan = jadwal_pengambilans.id_jadwal_pengambilan
-         ORDER BY alamat_penjemputans.id_alamat_penjemputan) as alamat_penjemputan
-    "))
-    ->leftJoin('alamat_penjemputans', 'alamat_penjemputans.id_jadwal_pengambilan', '=', 'jadwal_pengambilans.id_jadwal_pengambilan')
-    ->groupBy('jadwal_pengambilans.id_jadwal_pengambilan', 'jadwal_pengambilans.id')
-    ->get();
+        $data = JadwalPengambilan::select(
+            'jadwal_pengambilans.id',
+            'jadwal_pengambilans.id_jadwal_pengambilan',
+            'jadwal_pengambilans.id_user',
+            'jadwal_pengambilans.nama_driver',
+            'jadwal_pengambilans.nomor',
+            'jadwal_pengambilans.status',
+            DB::raw('(SELECT GROUP_CONCAT(alamat_penjemputans.alamat SEPARATOR ", ") as alamat 
+                      FROM alamat_penjemputans 
+                      WHERE alamat_penjemputans.id_jadwal_pengambilan = jadwal_pengambilans.id_jadwal_pengambilan 
+                      ORDER BY alamat_penjemputans.id_alamat_penjemputan ASC) as alamat_pengambilan')
+        )
+
+        ->leftJoin('alamat_penjemputans', 'alamat_penjemputans.id_jadwal_pengambilan', '=', 'jadwal_pengambilans.id_jadwal_pengambilan')    
+        ->groupBy(
+            'jadwal_pengambilans.id',
+            'jadwal_pengambilans.id_jadwal_pengambilan',
+            'jadwal_pengambilans.id_user',
+            'jadwal_pengambilans.nama_driver',
+            'jadwal_pengambilans.nomor',
+            'jadwal_pengambilans.status'
+        )
+        ->get();
         return view('JadwalPengambilan.jadwal-pengambilan', compact('data'));
     }
 
@@ -221,8 +235,44 @@ class JadwalPengambilanController extends Controller
         DB::table('jadwal_pengambilans')
         ->where('id', $id)
         ->update(['status' => 'Selesai']);
+        $jadwal_pengambilan = JadwalPengambilan::find($id);
+        $alamat_penjemputan = AlamatPenjemputan::where('id_jadwal_pengambilan', $jadwal_pengambilan->id_jadwal_pengambilan)->get();
+        $ids = $alamat_penjemputan->pluck('id_setoran_sampah')->toArray();
+        DB::table('setoran_sampahs')
+                    ->whereIn('id_setoran_sampah', $ids)
+                    ->update(['status' => 'Pesanan Diterima']);
 
         return redirect()->route('jadwal-pengambilan')->with('success', 'Jadwal Pengambilan updated successfully');
     }
+
+    public function extension_search_pengambilan($ids)
+    {
+        $data = JadwalPengambilan::whereIn('jadwal_pengambilans.id_jadwal_pengambilan', $ids)
+        ->select(
+            'jadwal_pengambilans.id',
+            'jadwal_pengambilans.id_jadwal_pengambilan',
+            'jadwal_pengambilans.id_user',
+            'jadwal_pengambilans.nama_driver',
+            'jadwal_pengambilans.nomor',
+            'jadwal_pengambilans.status',
+            DB::raw('(SELECT GROUP_CONCAT(alamat_penjemputans.alamat SEPARATOR ", ") as alamat 
+                      FROM alamat_penjemputans 
+                      WHERE alamat_penjemputans.id_jadwal_pengambilan = jadwal_pengambilans.id_jadwal_pengambilan 
+                      ORDER BY alamat_penjemputans.id_alamat_penjemputan ASC) as alamat_pengambilan')
+        )
+
+        ->leftJoin('alamat_penjemputans', 'alamat_penjemputans.id_jadwal_pengambilan', '=', 'jadwal_pengambilans.id_jadwal_pengambilan')    
+        ->groupBy(
+            'jadwal_pengambilans.id',
+            'jadwal_pengambilans.id_jadwal_pengambilan',
+            'jadwal_pengambilans.id_user',
+            'jadwal_pengambilans.nama_driver',
+            'jadwal_pengambilans.nomor',
+            'jadwal_pengambilans.status'
+        )
+        ->get();
+        return $data;
+    }
+
 
 }

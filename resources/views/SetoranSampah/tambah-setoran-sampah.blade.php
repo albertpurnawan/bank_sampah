@@ -51,17 +51,28 @@
                 @isset($data)
                     @if ($data->status !== 'Pesanan Selesai' && $data->status !== 'Pesanan Ditolak')
                         @if(Auth::user()->role == 'Admin')
-                            <button class="rounded-[0.6rem] bg-[#009EE2] relative m-[0_2.1rem_0_0] flex items-center justify-center p-[1rem_1rem_0.7rem_1rem] w-fit box-sizing-border">
+                            <a href="{{ route('setoran-sampah.selesai', $data->id)}}" class="rounded-[0.6rem] bg-[#009EE2] relative m-[0_2.1rem_0_0] flex items-center justify-center p-[1rem_1rem_0.7rem_1rem] w-fit box-sizing-border">
                                 <span class="break-words font-['Poppins'] font-normal text-[1.4rem] text-[#FFFFFF]">
                                 Menyetujui
                                 </span>
-                            </button>
+                            </a>
                         @endif
+                        @if (Auth::user()->role == 'Nasabah')
+                            @if ($data->status === 'Pesanan Baru')
+                                <button class="rounded-[0.6rem] bg-[#21AA93] relative m-[0_2.1rem_0_0] flex items-center justify-center p-[1rem_1rem_0.7rem_1rem] w-fit box-sizing-border">
+                                    <span class="break-words font-['Poppins'] font-normal text-[1.4rem] text-[#FFFFFF]">
+                                    Simpan
+                                    </span>
+                                </button>
+                            @endif
+                        @else
                         <button class="rounded-[0.6rem] bg-[#21AA93] relative m-[0_2.1rem_0_0] flex items-center justify-center p-[1rem_1rem_0.7rem_1rem] w-fit box-sizing-border">
                             <span class="break-words font-['Poppins'] font-normal text-[1.4rem] text-[#FFFFFF]">
                             Simpan
                             </span>
                         </button>
+                        @endif
+                        
                     @endif
 
                 @else
@@ -150,14 +161,21 @@
                     Status
                 </div>
                 <div class="relative w-full h-fit overflow-hidden rounded-[0.5rem]">
-                    <select name="status" class="rounded-[0.6rem] bg-[#FFFFFF] relative p-[1.6rem_1.6rem_1.6rem_1.6rem] w-[80%] box-sizing-border break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]" style="appearance: none;" {{(Auth::user()->role == 'Nasabah' ? 'disabled' : '')}}>
-                        <option value="">Pilih Status</option>
-                        <option value="Pesanan Baru" @if(isset($data->status) && $data->status == 'Pesanan Baru') selected @elseif((Auth::user()->role == 'Nasabah') && empty($data->status)) selected @endif>Pesanan Baru</option>
-                        <option value="Penjemputan" @if(isset($data->status) && $data->status == 'Penjemputan') selected @endif>Penjemputan</option>
-                        <option value="Pesanan Diterima" @if(isset($data->status) && $data->status == 'Pesanan Diterima') selected @endif>Pesanan Diterima</option>
-                        <option value="Pesanan Ditolak" @if(isset($data->status) && $data->status == 'Pesanan Ditolak') selected @endif>Pesanan Ditolak</option>
-                        <option value="Pesanan Selesai" @if(isset($data->status) && $data->status == 'Pesanan Selesai') selected @endif>Pesanan Selesai</option>
+                    <select name="status" class="rounded-[0.6rem] bg-[#FFFFFF] relative p-[1.6rem_1.6rem_1.6rem_1.6rem] w-[80%] box-sizing-border break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]" style="appearance: none;">
+                        @if (Auth::user()->role == 'Nasabah' && !isset($data->status))
+                            <option value="Pesanan Baru" selected>Pesanan Baru</option>
+                        @elseif (isset($data->status))
+                            <option value="{{$data->status}}" selected>{{$data->status}}</option>
+                        @else
+                            <option value="">Pilih Status</option>
+                            <option value="Pesanan Baru" @if(isset($data->status) && $data->status == 'Pesanan Baru') selected @endif>Pesanan Baru</option>
+                            <option value="Penjemputan" @if(isset($data->status) && $data->status == 'Penjemputan') selected @endif>Penjemputan</option>
+                            <option value="Pesanan Diterima" @if(isset($data->status) && $data->status == 'Pesanan Diterima') selected @endif>Pesanan Diterima</option>
+                            <option value="Pesanan Ditolak" @if(isset($data->status) && $data->status == 'Pesanan Ditolak') selected @endif>Pesanan Ditolak</option>
+                            <option value="Pesanan Selesai" @if(isset($data->status) && $data->status == 'Pesanan Selesai') selected @endif>Pesanan Selesai</option>
+                        @endif
                     </select>
+                       
                     
                     <div class="absolute inset-y-0 right-[23%] flex items-center pl-3 pointer-events-none">
                         <img class="w-[0.9rem] h-[0.4rem]" src="../../assets/vectors/vector_3_x2.svg" />
@@ -171,6 +189,9 @@
                 <input id="total_harga" name="total_harga" class="rounded-[0.6rem] bg-[#FFFFFF] relative p-[1.6rem_1.6rem_1.6rem_1.6rem] w-[80%] box-sizing-border break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]" placeholder="Rp" @isset($data->id) value="{{ $data->total_harga }}" @else value=0 @endisset readonly></input>
             </div>
         </div>
+        @if (Auth::user()->role == 'Admin')
+            
+       
         <div class="break-words font-['Poppins'] font-normal text-[1rem] text-[#000000] mt-[2.5rem]">
           List Sampah
         </div>
@@ -221,6 +242,7 @@
         
         </div>
         </div>
+        @endif
     </form>
     <script>
         $(document).ready(function() {

@@ -19,7 +19,7 @@ class NewDataSeed extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            [ 
+            [
                 'id_user' => 'COMPANY',
                 'nama' => 'Company',
                 'foto' => null,
@@ -32,7 +32,7 @@ class NewDataSeed extends Seeder
                 'bank' => null,
                 'nomor_rekening' => rand(1111111111111111, 9999999999999999),
                 'is_lengkap' => '0',
-                'role' => 'Admin',
+                'role' => 'COMPANY',
                 'email_verified_at' => now(),
                 'password' => Hash::make('company'),
                 'saldo' => 0,

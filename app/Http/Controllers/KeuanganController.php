@@ -27,10 +27,11 @@ class KeuanganController extends Controller
             // dd(Auth::user()->role);
             $user = User::find(Auth::user()->id);
             $saldo = $user->saldo;
-            $data = Keuangan::where('id_user', Auth::user()->id)->get();
+            $data = Keuangan::where('id_user', $user->id_user)->get();
         }else{
             $data = Keuangan::all();
             $saldo = User::where('role', 'Admin')->first()->saldo;
+
         }
         return view('Keuangan.keuangan', compact('data', 'saldo_bank', 'saldo'));
     }
@@ -53,13 +54,14 @@ class KeuanganController extends Controller
         $validator = Validator::make($request->all(), [
             'nama_lengkap_rekening' => 'string|max:255',
             'tipe_penarikan' => 'string|max:255',
-            'saldo' => 'numeric|min:0',
+            'saldo_manual' => 'numeric|min:0|nullable',
+            'saldo_online' => 'numeric|min:0|nullable',
             'nomor_rekening' => 'string|min:0|max:20|nullable',
             'nomor' => 'string|max:13|nullable',
             'bank' => 'string|max:255|nullable',
             'status' => 'string|max:255',
         ]);
-
+        // dd($validator);
         if ($validator->fails()) {
             return redirect()->route('keuangan.tarik-insert')
                              ->withErrors($validator)
@@ -73,7 +75,7 @@ class KeuanganController extends Controller
                 'id_user' => $request->id_user ? $request->id_user : null,
                 'nama_lengkap_rekening' => $request->input('nama_lengkap_rekening') ? $request->input('nama_lengkap_rekening') : null,
                 'tipe_penarikan' => $request->input('tipe_penarikan') ? $request->input('tipe_penarikan') : null,
-                'saldo' => $request->input('saldo') ? $request->input('saldo') : null,
+                'saldo' => $request->input('saldo_manual') ? $request->input('saldo_manual') : $request->input('saldo_online'),
                 'nomor_rekening' => $request->input('nomor_rekening') ? $request->input('nomor_rekening') : null,
                 'nomor' => $request->input('nomor') ? $request->input('nomor') : null,
                 'bank' => $request->input('bank') ? $request->input('bank') : null,
@@ -89,7 +91,7 @@ class KeuanganController extends Controller
                 'id_user' => Auth::user()->id_user,
                 'nama_lengkap_rekening' => $request->input('nama_lengkap_rekening') ? $request->input('nama_lengkap_rekening') : null,
                 'tipe_penarikan' => $request->input('tipe_penarikan') ? $request->input('tipe_penarikan') : null,
-                'saldo' => $request->input('saldo') ? $request->input('saldo') : null,
+                'saldo' => $request->input('saldo_manual') ? $request->input('saldo_manual') : $request->input('saldo_online'),
                 'nomor_rekening' => $request->input('nomor_rekening') ? $request->input('nomor_rekening') : null,
                 'nomor' => $request->input('nomor') ? $request->input('nomor') : null,
                 'bank' => $request->input('bank') ? $request->input('bank') : null,
@@ -123,6 +125,7 @@ class KeuanganController extends Controller
             $user = User::where('id_user', "COMPANY")->first();
             $user->saldo = $user->saldo - $keuangan->saldo;
             $user->save();
+            User::where('id_user', $keuangan->id_user)->update(['saldo' => DB::raw('users.saldo - ' . $keuangan->saldo)]);
         }
     }
 

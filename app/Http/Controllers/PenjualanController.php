@@ -253,19 +253,19 @@ class PenjualanController extends Controller
     public function extension_search_penjualan($ids){
         $data = [];
         if ( Auth::user()->role == 'Nasabah') {
-            $data = SetoranSampah::where('status', 'Pesanan Selesai')
-            ->where('id_user', Auth::user()->id_user)
-            ->whereIn('id_penjualan', $ids)
+            $data = SetoranSampah::where('setoran_sampahs.status', 'Pesanan Selesai')
+            ->where('setoran_sampahs.id_user', Auth::user()->id_user)
+            ->whereIn('setoran_sampahs.id_setoran_sampah', $ids)
             ->leftJoin('list_sampahs', 'list_sampahs.id_setoran_sampah', '=', 'setoran_sampahs.id_setoran_sampah')
             ->leftJoin('jenis_sampahs', 'jenis_sampahs.id_jenis_sampah', '=', 'list_sampahs.id_jenis_sampah')
             ->select(
                 'setoran_sampahs.id',
                 'setoran_sampahs.id_setoran_sampah',
                 'setoran_sampahs.id_user',
-                'setoran_sampahs.status',
                 'setoran_sampahs.tanggal',
                 'setoran_sampahs.created_at',
                 'setoran_sampahs.updated_at',
+                'setoran_sampahs.status',
                 DB::raw("SUM(list_sampahs.qty) as qty"),
                 DB::raw("SUM(list_sampahs.qty * jenis_sampahs.harga_per_kg) as total_harga")
             )
@@ -273,10 +273,11 @@ class PenjualanController extends Controller
                 'setoran_sampahs.id',
                 'setoran_sampahs.id_setoran_sampah',
                 'setoran_sampahs.id_user',
-                'setoran_sampahs.status',
                 'setoran_sampahs.tanggal',
                 'setoran_sampahs.created_at',
-                'setoran_sampahs.updated_at'
+                'setoran_sampahs.updated_at',
+                'setoran_sampahs.status',
+
             )
             ->get();
         
@@ -292,59 +293,34 @@ class PenjualanController extends Controller
     }
 
     public function extension_search_setoran($ids){
-        $data = [];
-        if ( Auth::user()->role == 'Nasabah') {
-            $data = SetoranSampah::where('setoran_sampahs.id_user', Auth::user()->id_user)
-            ->whereIn('setoran_sampahs.id_setoran_sampah', $ids)
-            ->leftJoin('list_sampahs', 'list_sampahs.id_setoran_sampah', '=', 'setoran_sampahs.id_setoran_sampah')
-            ->leftJoin('jenis_sampahs', 'jenis_sampahs.id_jenis_sampah', '=', 'list_sampahs.id_jenis_sampah')
-            ->select(
-                'setoran_sampahs.id',
-                'setoran_sampahs.id_setoran_sampah',
-                'setoran_sampahs.id_user',
-                'setoran_sampahs.status',
-                'setoran_sampahs.tanggal',
-                'setoran_sampahs.created_at',
-                'setoran_sampahs.updated_at',
-                DB::raw("SUM(list_sampahs.qty) as qty"),
-                DB::raw("IFNULL(SUM(list_sampahs.qty * jenis_sampahs.harga_per_kg), 0) as total_harga")
-            )
-            ->groupBy(
-                'setoran_sampahs.id',
-                'setoran_sampahs.id_setoran_sampah',
-                'setoran_sampahs.id_user',
-                'setoran_sampahs.status',
-                'setoran_sampahs.tanggal',
-                'setoran_sampahs.created_at',
-                'setoran_sampahs.updated_at'
-            )
-            ->get();
-        }else{
-            $data = SetoranSampah::whereIn('setoran_sampahs.id_setoran_sampah', $ids)
-            ->leftJoin('list_sampahs', 'list_sampahs.id_setoran_sampah', '=', 'setoran_sampahs.id_setoran_sampah')
-            ->leftJoin('jenis_sampahs', 'jenis_sampahs.id_jenis_sampah', '=', 'list_sampahs.id_jenis_sampah')
-            ->select(
-                'setoran_sampahs.id',
-                'setoran_sampahs.id_setoran_sampah',
-                'setoran_sampahs.id_user',
-                'setoran_sampahs.status',
-                'setoran_sampahs.tanggal',
-                'setoran_sampahs.created_at',
-                'setoran_sampahs.updated_at',
-                DB::raw("SUM(list_sampahs.qty) as qty"),
-                DB::raw("IFNULL(SUM(list_sampahs.qty * jenis_sampahs.harga_per_kg), 0) as total_harga")
-            )
-            ->groupBy(
-                'setoran_sampahs.id',
-                'setoran_sampahs.id_setoran_sampah',
-                'setoran_sampahs.id_user',
-                'setoran_sampahs.status',
-                'setoran_sampahs.tanggal',
-                'setoran_sampahs.created_at',
-                'setoran_sampahs.updated_at'
-            )
-            ->get();
-        }
+ 
+        $data = SetoranSampah::whereIn('setoran_sampahs.id_setoran_sampah', $ids)
+        ->leftJoin('list_sampahs', 'list_sampahs.id_setoran_sampah', '=', 'setoran_sampahs.id_setoran_sampah')
+        ->leftJoin('jenis_sampahs', 'jenis_sampahs.id_jenis_sampah', '=', 'list_sampahs.id_jenis_sampah')
+        ->leftJoin('users', 'users.id_user', '=', 'setoran_sampahs.id_user')
+        ->select(
+            'setoran_sampahs.id',
+            'setoran_sampahs.id_setoran_sampah',
+            'setoran_sampahs.id_user',
+            'users.nama',
+            'setoran_sampahs.status',
+            'setoran_sampahs.tanggal',
+            'setoran_sampahs.created_at',
+            'setoran_sampahs.updated_at',
+            DB::raw("SUM(list_sampahs.qty) as qty"),
+            DB::raw("IFNULL(SUM(list_sampahs.qty * jenis_sampahs.harga_per_kg), 0) as total_harga")
+        )
+        ->groupBy(
+            'setoran_sampahs.id',
+            'setoran_sampahs.id_setoran_sampah',
+            'setoran_sampahs.id_user',
+            'users.nama',
+            'setoran_sampahs.status',
+            'setoran_sampahs.tanggal',
+            'setoran_sampahs.created_at',
+            'setoran_sampahs.updated_at'
+        )
+        ->get();
         return $data;
     }
 }

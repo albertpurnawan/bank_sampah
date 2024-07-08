@@ -107,6 +107,41 @@
                       </span>
                     </div>
                   @endif
+                  @if($data->status == 'Pesanan Diterima')
+                  <div class="rounded-[0.6rem] bg-[#FF9A03] bg-opacity-10 relative flex items-center justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                      <span class="opacity-100 break-words font-['Poppins'] font-normal text-[1rem] text-[#FF9A03]">
+                        {{$data->status}}
+                      </span>
+                  </div>
+                @endif
+                @if($data->status == 'Penjemputan')
+                  <div class="rounded-[0.6rem] bg-[#E6F4FF] relative flex items-center justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                      <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#0958D9]">
+                        {{$data->status}}
+                      </span>
+                  </div>
+                @endif
+                  @if($data->status == 'Pesanan Baru')
+                  <div class="rounded-[0.6rem] bg-[#F6FFED] relative flex justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                      <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#52C41A]">
+                        {{$data->status}}
+                      </span>
+                    </div>
+                  @endif
+                  @if($data->status == 'Pesanan Ditolak')
+                  <div class="rounded-[0.6rem] bg-[#FFF2F0] relative flex justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                      <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#FF4D4F]">
+                        {{$data->status}}
+                      </span>
+                    </div>
+                  @endif
+                  @if($data->status == 'Pesanan Selesai')
+                  <div class="rounded-[0.6rem] bg-[#4E9C00] relative flex justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                      <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#FFFFFF]">
+                        {{$data->status}}
+                      </span>
+                    </div>
+                  @endif
                 </div>
             </div>
             <div class="bg-[#F2F2F2] w-[70.6rem] h-[0.1rem]">
@@ -216,6 +251,41 @@
                                 </span>
                               </div>
                               ` : ''}
+                             ${data.status === 'Pesanan Diterima' ? `
+                            <div class="rounded-[0.6rem] bg-[#FF9A03] bg-opacity-10 relative flex items-center justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                                <span class="opacity-100 break-words font-['Poppins'] font-normal text-[1rem] text-[#FF9A03]">
+                                  {{$data->status}}
+                                </span>
+                            </div>
+                            ` : ''}
+                            ${data.status === 'Penjemputan' ? `
+                              <div class="rounded-[0.6rem] bg-[#E6F4FF] relative flex items-center justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                                  <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#0958D9]">
+                                    {{$data->status}}
+                                  </span>
+                              </div>
+                            ` : ''}
+                            ${data.status === 'Pesanan Baru' ? `
+                              <div class="rounded-[0.6rem] bg-[#F6FFED] relative flex justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                                  <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#52C41A]">
+                                    {{$data->status}}
+                                  </span>
+                                </div>
+                              ` : ''}
+                            ${data.status === 'Pesanan Ditolak' ? `
+                              <div class="rounded-[0.6rem] bg-[#FFF2F0] relative flex justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                                  <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#FF4D4F]">
+                                    {{$data->status}}
+                                  </span>
+                                </div>
+                              ` : ''}
+                            ${data.status === 'Pesanan Selesai' ? `
+                              <div class="rounded-[0.6rem] bg-[#4E9C00] relative flex justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                                  <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#FFFFFF]">
+                                    {{$data->status}}
+                                  </span>
+                                </div>
+                              ` : ''}
                           </div>
                       </div>
                       <div class="bg-[#F2F2F2] w-[70.6rem] h-[0.1rem]">
@@ -260,6 +330,41 @@
                                   ${data.status}
                                 </span>
                               </div>
+                              ` : ''}
+                              ${data.status === 'Pesanan Diterima' ? `
+                            <div class="rounded-[0.6rem] bg-[#FF9A03] bg-opacity-10 relative flex items-center justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                                <span class="opacity-100 break-words font-['Poppins'] font-normal text-[1rem] text-[#FF9A03]">
+                                  {{$data->status}}
+                                </span>
+                            </div>
+                            ` : ''}
+                            ${data.status === 'Penjemputan' ? `
+                              <div class="rounded-[0.6rem] bg-[#E6F4FF] relative flex items-center justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                                  <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#0958D9]">
+                                    {{$data->status}}
+                                  </span>
+                              </div>
+                            ` : ''}
+                            ${data.status === 'Pesanan Baru' ? `
+                              <div class="rounded-[0.6rem] bg-[#F6FFED] relative flex justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                                  <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#52C41A]">
+                                    {{$data->status}}
+                                  </span>
+                                </div>
+                              ` : ''}
+                            ${data.status === 'Pesanan Ditolak' ? `
+                              <div class="rounded-[0.6rem] bg-[#FFF2F0] relative flex justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                                  <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#FF4D4F]">
+                                    {{$data->status}}
+                                  </span>
+                                </div>
+                              ` : ''}
+                            ${data.status === 'Pesanan Selesai' ? `
+                              <div class="rounded-[0.6rem] bg-[#4E9C00] relative flex justify-center p-[0.1rem_0.4rem_0.1rem_0.4rem] box-sizing-border w-fit">
+                                  <span class="opacity-[0.65] break-words font-['Poppins'] font-normal text-[1rem] text-[#FFFFFF]">
+                                    {{$data->status}}
+                                  </span>
+                                </div>
                               ` : ''}
                           </div>
                       </div>

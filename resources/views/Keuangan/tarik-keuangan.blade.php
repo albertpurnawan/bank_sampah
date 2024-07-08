@@ -100,7 +100,7 @@
                 <div class="m-[0_0_0.4rem_0] inline-block self-start break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]">
                     Saldo yang Dicairkan
                 </div>
-                <input name="saldo" onchange="validate_saldo(this)" class="rounded-[0.6rem] bg-[#FFFFFF] relative p-[1.6rem_1.6rem_1.6rem_1.6rem] w-[80%] box-sizing-border break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]" placeholder="Rp" value="@isset($data->saldo){{$data->saldo}}@endisset"></input>
+                <input name="saldo_manual" onchange="validate_saldo(this)" class="rounded-[0.6rem] bg-[#FFFFFF] relative p-[1.6rem_1.6rem_1.6rem_1.6rem] w-[80%] box-sizing-border break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]" placeholder="Rp" value="@isset($data->saldo){{$data->saldo}}@endisset"></input>
             </div>
         </div>
         <div class=" m-[1rem_0.1rem_0_0.1rem] flex flex-row justify-between self-start w-full box-sizing-border form_online" style="display: none">
@@ -139,7 +139,7 @@
                 <div class="m-[0_0_0.4rem_0] inline-block self-start break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]">
                     Saldo yang Dicairkan
                 </div>
-                <input name="saldo" class="rounded-[0.6rem] bg-[#FFFFFF] relative p-[1.6rem_1.6rem_1.6rem_1.6rem] w-[80%] box-sizing-border break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]" placeholder="Rp" onchange="validate_saldo(this)" value="@isset($data->saldo){{$data->saldo}}@endisset"></input>
+                <input name="saldo_online" class="rounded-[0.6rem] bg-[#FFFFFF] relative p-[1.6rem_1.6rem_1.6rem_1.6rem] w-[80%] box-sizing-border break-words font-['Poppins'] font-normal text-[1rem] text-[#000000]" placeholder="Rp" onchange="validate_saldo(this)" value="@isset($data->saldo){{$data->saldo}}@endisset"></input>
             </div>
         </div>
     </form>

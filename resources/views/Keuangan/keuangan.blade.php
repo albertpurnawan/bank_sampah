@@ -56,12 +56,14 @@
           <div class="bg-[#F2F2F2] w-full h-[0.1rem] ">
           </div>
         </div>
+        @isset($data)
+          
         @foreach ($data as $data)
-        <div class="w-full cursor-pointer" onclick="window.location.href='keuangan/edit/{{$data->id}}'">
+        <div class="w-full cursor-pointer" onclick="window.location.href='{{ url('keuangan/edit/' . ($data->id ?? 'default')) }}'">
           <div class="m-[0_0_1.8rem_0] flex flex-col items-center w-full box-sizing-border">
             <div class="m-[0_0_1.6rem_1.6rem] flex flex-row justify-start w-full box-sizing-border">
               <div class="opacity-[0.65] m-[0_0_0.1rem_0] inline-block break-words font-['Poppins'] font-normal text-[1rem] text-[#000000] w-[15%]">
-                {{ \Carbon\Carbon::parse($data->created_at)->format('d/m/Y') }}
+                {{ $data->created_at}}
               </div>
               <div class="opacity-[0.65] m-[0_0_0.1rem_0] inline-block break-words font-['Poppins'] font-normal text-[1rem] text-[#000000] w-[15%]">
                 {{ $data->saldo}}
@@ -99,6 +101,8 @@
         </script>
         
         @endforeach
+        @endisset
+
       </div>
 
 

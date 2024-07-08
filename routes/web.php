@@ -66,14 +66,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/jadwal-pengambilan/delete/row', [JadwalPengambilanController::class, 'deleteRow'])->name('jadwal-pengambilan.delete-row');
     Route::get('/jadwal-pengambilan/getItemData', [JadwalPengambilanController::class, 'getItemData'])->name('jadwal-pengambilan.getItemData');
     Route::get('/jadwal-pengambilan/selesai/{id}', [JadwalPengambilanController::class, 'approve'])->name('jadwal-pengambilan.selesai');
-
-
+    
+    
     Route::get('/setoran-sampah', [SetoranSampahController::class, 'index'])->name('setoran-sampah');
     Route::get('/setoran-sampah/tambah', [SetoranSampahController::class, 'create'])->name('setoran-sampah.tambah');
     Route::post('/setoran-sampah/tambah', [SetoranSampahController::class, 'store'])->name('setoran-sampah.tambah-insert');
     Route::get('/setoran-sampah/edit/{id}', [SetoranSampahController::class, 'edit'])->name('setoran-sampah.edit');
     Route::post('/setoran-sampah/delete', [SetoranSampahController::class, 'delete'])->name('setoran-sampah.delete');
     Route::post('/setoran-sampah/delete/row', [SetoranSampahController::class, 'deleteRow'])->name('setoran-sampah.delete-row');
+    Route::get('/setoran-sampah/selesai/{id}', [SetoranSampahController::class, 'approve'])->name('setoran-sampah.selesai');
 
     Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan');
     Route::get('/penjualan/tambah', [PenjualanController::class, 'create'])->name('penjualan.tambah');

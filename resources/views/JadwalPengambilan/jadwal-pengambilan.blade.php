@@ -36,6 +36,9 @@
             <div class="m-[0_0_0.2rem_0] inline-block break-words font-['Lato'] font-semibold text-[1rem] text-[#000000] w-[15%]">
             Nomor Whatsapp
             </div>
+            <div class="m-[0_0_0.2rem_0] inline-block break-words font-['Lato'] font-semibold text-[1rem] text-[#000000] w-[15%]">
+            Alamat Penjemputan
+            </div>
           </div>
           <div class="bg-[#F2F2F2] w-full h-[0.1rem] ">
           </div>
@@ -57,6 +60,9 @@
                   </div>
                   <div class="opacity-[0.65] m-[0_0_0.1rem_0] inline-block break-words font-['Poppins'] font-normal text-[1rem] text-[#000000] w-[15%]">
                     {{$data->nomor}}
+                  </div>
+                  <div class="opacity-[0.65] m-[0_0_0.1rem_0] inline-block break-words font-['Poppins'] font-normal text-[1rem] text-[#000000] w-[15%]">
+                    {{$data->alamat_pengambilan}}
                   </div>
                 </div>
                 <div class="bg-[#F2F2F2] w-[70.6rem] h-[0.1rem]">
@@ -138,6 +144,9 @@
                               </div>
                               <div class="opacity-[0.65] m-[0_0_0.1rem_0] inline-block break-words font-['Poppins'] font-normal text-[1rem] text-[#000000] w-[15%]">
                                 ${data.nomor}
+                              </div>
+                              <div class="opacity-[0.65] m-[0_0_0.1rem_0] inline-block break-words font-['Poppins'] font-normal text-[1rem] text-[#000000] w-[15%]">
+                               ${data.alamat_pengambilan}
                               </div>
                             </div>
                             <div class="bg-[#F2F2F2] w-[70.6rem] h-[0.1rem]">
