@@ -5,20 +5,23 @@
     "functions": {
         "api/index.php": { "runtime": "vercel-php@0.6.0" }
     },
-    "builds": [
-    {
-      "src": "public/**/*",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/**/*.php",
-      "use": "@vercel/php"
-    }
-    ],
     "routes": [{
         "src": "/(.*)",
         "dest": "/api/index.php"
-    }],
+    },
+    {
+        "src": "/assets/images/(.*)",
+        "dest": "/public/assets/images"
+    },
+    {
+        "src": "/assets/json/(.*)",
+        "dest": "/public/assets/json"
+    },
+    {
+        "src": "/assets/vectors/(.*)",
+        "dest": "/public/assets/vectors"
+    }
+],
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "true",
@@ -34,5 +37,6 @@
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie"
-    }
+    },
+    "outputDirectory": "public"
 }

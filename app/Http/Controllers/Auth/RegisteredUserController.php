@@ -59,10 +59,10 @@ class RegisteredUserController extends Controller
             'nama' => $request->nama,
             'email' => $request->email,
             'nomor' => $request->nomor,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->password)
         ]);
         $this->checkIsLengkap($user);
-        event(new Registered($user));
+        // event(new Registered($user));
 
         // Auth::guard('web')->login($user);
 
